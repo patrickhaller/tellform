@@ -16,7 +16,7 @@
 		},
 		"NODE_ENV": {
 			"description": "Choose whether to run app in development or production mode",
-			"value": "production"
+			"value": "development"
 		},
 		"BASE_URL": {
 			"description": "The url of your heroku app."
