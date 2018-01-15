@@ -20,11 +20,11 @@ angular.module('forms').controller('AdminFormController', ['$rootScope', '$windo
 
         CurrentForm.setForm($scope.myform);
 
-        $scope.formURL = '/#!/forms/' + $scope.myform._id;
+        $scope.formURL = '#!/forms/' + $scope.myform._id;
 
         if ($scope.myform.isLive) {
             if ($window.subdomainsDisabled === true) {
-                $scope.actualFormURL = window.location.protocol + '//' + window.location.host + '/view' + $scope.formURL;
+                $scope.actualFormURL = window.location.protocol + '//' + window.location.host + '/meeps/view' + $scope.formURL;
             } else {
                 if (window.location.host.split('.').length < 3) {
                     $scope.actualFormURL = window.location.protocol + '//' + $scope.myform.admin.username + '.' + window.location.host + $scope.formURL;
@@ -50,15 +50,15 @@ angular.module('forms').controller('AdminFormController', ['$rootScope', '$windo
             }
         ];
 
-        $scope.designTabActive = false
+        $scope.designTabActive = false;
 
         $scope.deactivateDesignTab = function(){
-            $scope.designTabActive = false
-        }
+            $scope.designTabActive = false;
+        };
 
         $scope.activateDesignTab = function(){
-            $scope.designTabActive = true
-        }
+            $scope.designTabActive = true;
+        };
 
         $scope.setForm = function(form){
             $scope.myform = form;
@@ -104,9 +104,9 @@ angular.module('forms').controller('AdminFormController', ['$rootScope', '$windo
                 var form_id = $scope.myform._id;
                 if(!form_id) throw new Error('Error - removeCurrentForm(): $scope.myform._id does not exist');
 
-                $http.delete('/forms/'+form_id)
+                $http.delete('/meeps/forms/'+form_id)
                     .then(function(response){
-                        $state.go('listForms', {}, {reload: true})
+                        $state.go('listForms', {}, {reload: true});
                     }, function(error){
                         console.error(error);
                     });
@@ -117,7 +117,7 @@ angular.module('forms').controller('AdminFormController', ['$rootScope', '$windo
             $scope.update(updateImmediately, data, shouldDiff, refreshAfterUpdate, function(){
                 refreshFrame();
             });
-        }
+        };
 
         // Update existing Form
         $scope.update = $rootScope.update = function(updateImmediately, data, shouldDiff, refreshAfterUpdate, cb){
@@ -145,9 +145,9 @@ angular.module('forms').controller('AdminFormController', ['$rootScope', '$windo
                         }
                     }
 
-                    var data = DeepDiff.diff($scope.oldForm, $scope.myform);
+                    var ddata = DeepDiff.diff($scope.oldForm, $scope.myform);
 
-                    $scope.updatePromise = $http.put('/forms/' + $scope.myform._id, {changes: data})
+                    $scope.updatePromise = $http.put('/meeps/forms/' + $scope.myform._id, {changes: ddata})
                         .then(function (response) {
                             if (refreshAfterUpdate) {
                                 $rootScope.myform = $scope.myform = response.data;
@@ -190,7 +190,7 @@ angular.module('forms').controller('AdminFormController', ['$rootScope', '$windo
                     delete dataToSend.lastModified;
                     delete dataToSend.__v;
 
-                    $scope.updatePromise = $http.put('/forms/' + $scope.myform._id, {form: dataToSend})
+                    $scope.updatePromise = $http.put('/meeps/forms/' + $scope.myform._id, {form: dataToSend})
                         .then(function (response) {
                             if (refreshAfterUpdate) {
                                 $rootScope.myform = $scope.myform = response.data;

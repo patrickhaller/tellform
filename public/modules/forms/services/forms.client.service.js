@@ -1,14 +1,14 @@
 'use strict';
 
 //Forms service used for communicating with the forms REST endpoints
-angular.module('forms').factory('GetForms', ['$resource', 'FORM_URL',
-	function($resource, FORM_URL) {
+angular.module('forms').factory('GetForms', ['$resource', 'FORM_URL', 'BASE_URL',
+	function($resource, FORM_URL, BASE_URL) {
 		return $resource(FORM_URL, {
 			formId: '@_id'
 		}, {
 			'query' : {
 				method: 'GET',
-				url: '/forms',
+				url: BASE_URL+'/forms',
 				isArray: true
 			},
 			'get' : {

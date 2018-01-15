@@ -7,7 +7,7 @@ angular.module('view-form').config(['$stateProvider',
 		$stateProvider.
 		state('submitForm', {
 			url: '/forms/:formId',
-			templateUrl: '/static/form_modules/forms/base/views/submit-form.client.view.html',
+			templateUrl: 'static/form_modules/forms/base/views/submit-form.client.view.html',
 			resolve: {
 				Forms: 'Forms',
 				myForm: function (Forms, $q, $state, $stateParams) {
@@ -27,11 +27,11 @@ angular.module('view-form').config(['$stateProvider',
 		}).
         state('unauthorizedFormAccess', {
             url: '/forms/unauthorized',
-            templateUrl: '/static/form_modules/forms/base/views/form-unauthorized.client.view.html'
+            templateUrl: 'static/form_modules/forms/base/views/form-unauthorized.client.view.html'
 	    })
 	    .state('formNotFound', {
             url: '*path',
-            templateUrl: '/static/form_modules/forms/base/views/form-not-found.client.view.html'
+            templateUrl: 'static/form_modules/forms/base/views/form-not-found.client.view.html'
 	    });
     }
 ]);

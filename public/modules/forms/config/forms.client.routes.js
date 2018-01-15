@@ -1,7 +1,7 @@
 'use strict';
 
 // Setting up route
-angular.module('forms').config(['$stateProvider',
+angular.module('forms').config(['$stateProvider', 
 
 	function($stateProvider) {
 		// Forms state routing
@@ -25,7 +25,7 @@ angular.module('forms').config(['$stateProvider',
 			controllerAs: 'ctrl'
   		}).state('submitForm', {
 			url: '/forms/:formId',
-			templateUrl: '/static/form_modules/forms/base/views/submit-form.client.view.html',
+			templateUrl: 'static/form_modules/forms/base/views/submit-form.client.view.html',
 			data: {
 				hideNav: true
 			},

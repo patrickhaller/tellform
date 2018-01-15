@@ -1,4 +1,4 @@
-<header data-ng-include="'/static/modules/core/views/header.client.view.html'"></header>
+<header data-ng-include="'static/modules/core/views/header.client.view.html'"></header>
 
 <section class="admin-form container-fluid">
 
@@ -63,7 +63,7 @@
 					<edit-form-directive myform="myform"></edit-form-directive>
 				</uib-tab>
 				<uib-tab ng-repeat="tab in tabData" index="{{$index+1}}" heading="{{tab.heading}}" select="deactivateDesignTab()">
-					<div class='row' data-ng-include="'/static/modules/forms/admin/views/adminTabs/'+tab.templateName+'.html'"></div>
+					<div class='row' data-ng-include="'static/modules/forms/admin/views/adminTabs/'+tab.templateName+'.html'"></div>
 				</uib-tab>
 				<uib-tab index="2" heading="{{ 'ANALYZE_TAB' | translate }}" select="deactivateDesignTab()">
 					<edit-submissions-form-directive myform="myform" user="myform.admin"></edit-submissions-form-directive>

@@ -137,7 +137,7 @@ angular.module('view-form').directive('submitFormDirective', ['$http', 'TimeCoun
 
 				$scope.isActiveField = function(field){
 					if($scope.selected._id === field._id) {
-						return true
+						return true;
 					}
 					return false;
 				};
@@ -150,11 +150,11 @@ angular.module('view-form').directive('submitFormDirective', ['$http', 'TimeCoun
 	    			if(!field_id){
 	    				field_id = $scope.myform.visible_form_fields[field_index]._id;
 					} else if(field_index === null){
-						field_index = $scope.myform.visible_form_fields.length
+						field_index = $scope.myform.visible_form_fields.length;
 
 						for(var i=0; i < $scope.myform.visible_form_fields.length; i++){
 							var currField = $scope.myform.visible_form_fields[i];
-							if(currField['_id'] == field_id){
+							if(currField._id === field_id){
 								field_index = i;
 								break;
 							}
@@ -224,8 +224,8 @@ angular.module('view-form').directive('submitFormDirective', ['$http', 'TimeCoun
 						var maxScrollTop = $(document).height() - $(window).height();
 						var fieldWrapperHeight = $('form_fields').height();
 
-						var selector = 'form > .field-directive:nth-of-type(' + String($scope.myform.visible_form_fields.length - 1)+ ')'
-						var fieldDirectiveHeight = $(selector).height()
+						var selector = 'form > .field-directive:nth-of-type(' + String($scope.myform.visible_form_fields.length - 1)+ ')';
+						var fieldDirectiveHeight = $(selector).height();
 						var scrollPosition = maxScrollTop - submitSectionHeight - fieldDirectiveHeight*1.2;
 
 						var fractionToJump = 0.9;
@@ -367,10 +367,10 @@ angular.module('view-form').directive('submitFormDirective', ['$http', 'TimeCoun
 
 					form.timeElapsed = _timeElapsed;
 					form.percentageComplete = $filter('formValidity')($scope.myform) / $scope.myform.visible_form_fields.length * 100;
-					delete form.endPage
-					delete form.isLive
-					delete form.provider
-					delete form.startPage
+					delete form.endPage;
+					delete form.isLive;
+					delete form.provider;
+					delete form.startPage;
 					delete form.visible_form_fields;
 					delete form.analytics;
 					delete form.design;
@@ -394,7 +394,7 @@ angular.module('view-form').directive('submitFormDirective', ['$http', 'TimeCoun
 					}
 
 					setTimeout(function () {
-						$scope.submitPromise = $http.post('/forms/' + $scope.myform._id, form)
+						$scope.submitPromise = $http.post('/meeps/forms/' + $scope.myform._id, form)
 							.success(function (data, status) {
 								$scope.myform.submitted = true;
 								$scope.loading = false;

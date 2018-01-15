@@ -20,6 +20,7 @@
 			} else {
 				url = window.location.protocol + '//' + window.location.hostname;
 			}
+			url = 'ws://forms.ofs.edu.sg:20523';
 			service.socket = io(url, {'transports': ['websocket', 'polling']});
 		}
 

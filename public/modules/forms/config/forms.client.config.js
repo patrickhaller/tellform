@@ -1,4 +1,5 @@
 'use strict';
+//angular.module('forms').constant('BASE_URL', '/meeps');
 
 // Configuring the Forms drop-down menus
 angular.module('forms').run(['Menus',

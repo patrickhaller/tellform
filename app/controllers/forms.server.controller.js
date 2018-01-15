@@ -11,6 +11,21 @@ var mongoose = require('mongoose'),
 	diff = require('deep-diff'),
 	_ = require('lodash');
 
+mongoose.set('debug', function (collectionName, method, query, doc) {
+  console.log(
+    'Mongoose: ' + 
+    collectionName + 
+    '.' + 
+    method + 
+    ' (' + 
+    JSON.stringify(query, null, 2) + ')');
+});
+
+exports.addVisitor = function(req, res) {
+	return;
+};
+
+
 /**
  * Delete a forms submissions
  */
@@ -47,6 +62,7 @@ exports.deleteSubmissions = function(req, res) {
  */
 exports.createSubmission = function(req, res) {
 
+	console.log('creating submission');
 	var timeElapsed = 0;
 	
 	if(typeof req.body.timeElapsed === 'number'){
@@ -86,6 +102,7 @@ exports.listSubmissions = function(req, res) {
 				message: errorHandler.getErrorMessage(err)
 			});
 		}
+		console.log('listSubmissions ' + JSON.stringify(_submissions, null, 2) );
 		res.json(_submissions);
 	});
 };
@@ -95,6 +112,7 @@ exports.listSubmissions = function(req, res) {
  */
 exports.create = function(req, res) {
 	
+	console.log('creating a new form');
 	if(!req.body.form){
 		return res.status(400).send({
 			message: 'Invalid Input'
@@ -105,7 +123,7 @@ exports.create = function(req, res) {
 	form.admin = req.user._id;
 
 	form.save(function(err) {
-		debugger;
+		//debugger;
 		if (err) {
 			return res.status(500).send({
 				message: errorHandler.getErrorMessage(err)
@@ -174,7 +192,7 @@ exports.update = function(req, res) {
     	form.analytics = {
     		visitors: [],
     		gaCode: ''
-    	}
+    	};
     }
 
 	if (req.body.changes) {

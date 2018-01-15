@@ -4,11 +4,12 @@
  * Module dependencies.
  */
 var forms = require('../../app/controllers/forms.server.controller'),
+	config = require('../../config/config'),
 	core = require('../../app/controllers/core.server.controller');
 
 module.exports = function(app) {
 	// Core routing
-	app.route('/')
+	app.route(config.base)
 		.get(core.index);
 
 	app.route('/subdomain/api/')
