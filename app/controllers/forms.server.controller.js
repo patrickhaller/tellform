@@ -95,9 +95,8 @@ exports.createSubmission = function(req, res) {
  * Get List of Submissions for a given Form
  */
 exports.listSubmissions = function(req, res) {
-	var _form = req.form;
 
-	FormSubmission.find({ form: _form._id }).sort('created').lean().exec(function(err, _submissions) {
+	FormSubmission.find({ form: req.form._id }).sort('created').lean().exec(function(err, _submissions) {
 		if (err) {
 			console.error(err);
 			res.status(500).send({
