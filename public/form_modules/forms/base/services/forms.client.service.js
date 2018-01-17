@@ -21,7 +21,7 @@ angular.module('view-form').factory('Forms', ['$resource', 'VIEW_FORM_URL',
 				method: 'PUT'
 			},
 			'save': {
-				method: 'POST'
+				method: 'PUT'
 			}
 		});
 	}

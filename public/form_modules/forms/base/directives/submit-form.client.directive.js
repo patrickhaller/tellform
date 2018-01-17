@@ -394,7 +394,7 @@ angular.module('view-form').directive('submitFormDirective', ['$http', 'TimeCoun
 					}
 
 					setTimeout(function () {
-						$scope.submitPromise = $http.post('/meeps/forms/' + $scope.myform._id, form)
+						$scope.submitPromise = $http.put('/meeps/forms/' + $scope.myform._id + '/submissions', form)
 							.success(function (data, status) {
 								$scope.myform.submitted = true;
 								$scope.loading = false;

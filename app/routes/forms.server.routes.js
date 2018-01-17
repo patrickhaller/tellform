@@ -45,13 +45,13 @@ module.exports = function(app) {
 	app.route(config.base+'forms/:formId([a-zA-Z0-9]+)')
 	//app.route('/forms/:formId([a-zA-Z0-9]+)')
 		.get(forms.read)
-		.post(forms.createSubmission)
 		.put(auth.isAuthenticatedOrApiKey, forms.hasAuthorization, forms.update)
 		.delete(auth.isAuthenticatedOrApiKey, forms.hasAuthorization, forms.delete);
 
 	app.route(config.base+'forms/:formId([a-zA-Z0-9]+)/submissions')
 	//app.route('/forms/:formId([a-zA-Z0-9]+)/submissions')
 		.get(auth.isAuthenticatedOrApiKey, forms.hasAuthorization, forms.listSubmissions)
+		.put(forms.createSubmission)
 		.delete(auth.isAuthenticatedOrApiKey, forms.hasAuthorization, forms.deleteSubmissions);
 
 	app.route(config.base+'forms/:formId([a-zA-Z0-9]+)/visitors')
