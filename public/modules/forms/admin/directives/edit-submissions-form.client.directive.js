@@ -180,7 +180,8 @@ angular.module('forms').directive('editSubmissionsFormDirective', ['$rootScope',
                     $event.stopPropagation();
                 };
                 $scope.rowClicked = function(row_index) {
-                   $scope.table.rows[row_index].selected = !$scope.table.rows[row_index].selected;
+                   //$scope.table.rows[row_index].selected = ! $scope.table.rows[row_index].selected;
+                   // angular already syncs this
                 };
 
                 /*
@@ -192,7 +193,7 @@ angular.module('forms').directive('editSubmissionsFormDirective', ['$rootScope',
 
                     $scope.deletionInProgress = true;
                     var delete_ids = _.chain($scope.table.rows).filter(function(row){
-                        return !!row.selected;
+                        return row.selected === true;
                     }).pluck('_id').value();
 
                     return $http({ url: BASE_URL+'/forms/'+$scope.myform._id+'/submissions',
