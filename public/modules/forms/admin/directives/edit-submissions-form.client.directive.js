@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('forms').directive('editSubmissionsFormDirective', ['$rootScope', '$http', 'Forms', '$stateParams', '$interval', 'BASE_URL',
-    function ($rootScope, $http, Forms, $stateParams, $interval, BASE_URL) {
+angular.module('forms').directive('editSubmissionsFormDirective', ['$rootScope', '$http', 'Forms', '$stateParams', '$interval', 
+    function ($rootScope, $http, Forms, $stateParams, $interval ) {
         return {
             templateUrl: 'modules/forms/admin/views/directiveViews/form/edit-submissions-form.client.view.html',
             restrict: 'E',
@@ -10,7 +10,7 @@ angular.module('forms').directive('editSubmissionsFormDirective', ['$rootScope',
                 myform: '='
             },
             controller: function($scope){
-		//var BASE_URL = '/meeps';
+		var BASE_URL = '/meeps';
                 $scope.table = {
                     masterChecker: false,
                     rows: []
@@ -20,7 +20,7 @@ angular.module('forms').directive('editSubmissionsFormDirective', ['$rootScope',
                 $scope.waitingForDeletion = false;
 
                 //Waits until deletionInProgress is false before running getSubmissions
-                $scope.$watch("deletionInProgress",function(newVal, oldVal){
+                $scope.$watch('deletionInProgress',function(newVal, oldVal){
                     if(newVal === oldVal) return;
 
                     if(newVal === false && $scope.waitingForDeletion) {
@@ -86,6 +86,7 @@ angular.module('forms').directive('editSubmissionsFormDirective', ['$rootScope',
                 $scope.getVisitors();
 
                 //Fetch submissions and visitor data every 1.67 min
+/*
                 var updateSubmissions = $interval($scope.handleSubmissionsRefresh, 100000);
                 var updateVisitors = $interval($scope.getVisitors, 1000000);
 
@@ -99,6 +100,7 @@ angular.module('forms').directive('editSubmissionsFormDirective', ['$rootScope',
                         $interval.cancel($scope.updateVisitors);
                     }
                 });
+*/
 
                 /*
                 ** Analytics Functions
