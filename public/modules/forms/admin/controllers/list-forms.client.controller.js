@@ -10,14 +10,14 @@ angular.module('forms').controller('ListFormsController', ['$rootScope', '$scope
         $scope.myforms = myForms;
 
 	for (var f in $scope.myforms) {
-		var form = $scope.myforms[f];
-		if (form._id === undefined) { continue; }
-        	$http.get(BASE_URL+'/forms/' + form._id + '/submissions')
-                .success( (function(form) {
+		f = $scope.myforms[f];
+		if (f._id === undefined) { continue; }
+        	$http.get(BASE_URL+'/forms/' + f._id + '/submissions')
+                .success( (function(f) {
 			return function(data, status, headers){
-				form.numberOfResponses = data.length;
+				f.numberOfResponses = data.length;
 			};
-		})(form));
+		})(f));
 			
 	}
 
