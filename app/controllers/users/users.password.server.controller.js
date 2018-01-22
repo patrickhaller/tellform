@@ -81,8 +81,8 @@ exports.forgot = function(req, res) {
 			}
 		},
 		function(token, user, done) {
-			const fn = pug.compileFile(__dirname + "/../../views/templates/reset-password-email.server.view.pug");
-			res.locals['url'] = 'http://' + req.headers.host + '/auth/reset/' + token;
+			const fn = pug.compileFile(__dirname + '/../../views/templates/reset-password-email.server.view.pug');
+			res.locals.url = config.urlExternal  + '/auth/reset/' + token;
 			
 			console.log(res.locals);
 			var renderedHtml = fn(res.locals);
@@ -98,10 +98,10 @@ exports.forgot = function(req, res) {
 			};
 
             var userEmail = user.email;
-			var user = userEmail.split('@')[0];
+			var _user = userEmail.split('@')[0];
 			var domain = userEmail.split('@')[1];
 
-			var obfuscatedUser = user.substring(0, 1) + user.substring(1).replace(/./g, '*');
+			var obfuscatedUser = _user.substring(0, 1) + _user.substring(1).replace(/./g, '*');
 			var domainName = domain.split('.')[0];
 			var tld = domain.split('.')[1];
 
@@ -192,7 +192,7 @@ exports.reset = function(req, res, next) {
 			});
 		},
 		function(user, done) {
-			const fn = pug.compileFile(__dirname + "/../../views/templates/reset-password-confirm-email.server.view.pug");
+			const fn = pug.compileFile(__dirname + '/../../views/templates/reset-password-confirm-email.server.view.pug');
 			var renderedHtml = fn(res.locals);
 			done(null, renderedHtml, user);
 		},

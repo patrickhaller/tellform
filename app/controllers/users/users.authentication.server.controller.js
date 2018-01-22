@@ -35,7 +35,7 @@ var config_nev = function () {
         emailAndUsernameUnique: true,
 	    expirationTime: 86400,  // 24 hours
 
-	    verificationURL: config.baseUrl+'/#!/verify/${URL}',
+	    verificationURL: config.urlExternal + '/#!/verify/${URL}',
 	    transportOptions: config.mailer.options,
 	    
 	    verifySendMailCallback: function(err, info) {
@@ -178,7 +178,7 @@ exports.signin = function(req, res, next) {
 			}
 			return res.status(400).send(err);
 		}
-		return res.redirect(307, '/meeps/auth/signin_make_user');
+		return res.redirect(307, config.urlPrefix + '/auth/signin_make_user');
 	});
 	
 };
@@ -200,7 +200,7 @@ exports.signin_make_user = function(req, res, next) {
 		if ( err && ! err.errmsg.includes('duplicate key error index') ) {
 			return res.status(400).send(err);
 		}
-		res.redirect(307, '/meeps/auth/signin_session');
+		res.redirect(307, config.urlPrefix + '/auth/signin_session');
 	});
 };
 

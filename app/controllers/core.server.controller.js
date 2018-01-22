@@ -20,7 +20,7 @@ exports.form = function(req, res) {
 	
 	console.log('XXX req is ' + req.url );
 	var urlPath = url.parse(req.url).path.split('/');
-	var idx =  urlPath.indexOf('meeps');
+	var idx =  urlPath.indexOf(config.urlPrefix);
 	/* if (idx !== -1) { 
 		urlPath.splice(idx, 1);
 		req.url = urlPath.join('/');

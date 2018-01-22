@@ -9,7 +9,7 @@ var forms = require('../../app/controllers/forms.server.controller'),
 
 module.exports = function(app) {
 	// Core routing
-	app.route(config.base)
+	app.route(config.urlPrefix)
 		.get(core.index);
 
 	app.route('/subdomain/api/')

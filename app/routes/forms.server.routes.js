@@ -9,7 +9,6 @@ var forms = require('../../app/controllers/forms.server.controller'),
 	core = require('../../app/controllers/core.server.controller');
 
 module.exports = function(app) {
-        console.log('config.base is ' + config.base);
 	// Form Routes
 	if(!config.subdomainsDisabled) {
 		app.route('/subdomain/:userSubdomain((?!api$)[A-Za-z0-9]+)/')
@@ -24,37 +23,31 @@ module.exports = function(app) {
 		app.route('/forms/:formId([a-zA-Z0-9]+)/render')
 			.get(auth.isAuthenticatedOrApiKey, forms.hasAuthorization, forms.readForRender);
 	} else {
-		//app.route(config.base+'/forms/:formIdFast([a-zA-Z0-9]+)/render')
-		app.route('/meeps/forms/:formIdFast([a-zA-Z0-9]+)/render')
+		app.route(config.urlPrefix + '/forms/:formIdFast([a-zA-Z0-9]+)/render')
 			.get(forms.readForRender);
 
-		//app.route(config.base+'/view/')
-		app.route('/meeps/view/')
+		app.route(config.urlPrefix + '/view/')
 		 	.get(core.form);
 	}
 
-   	app.route(config.base+'forms/:formIdFast([a-zA-Z0-9]+)')
-   	//app.route('/forms/:formIdFast([a-zA-Z0-9]+)')
+   	app.route(config.urlPrefix+'/forms/:formIdFast([a-zA-Z0-9]+)')
         .post(forms.createSubmission);
 	
-	app.route(config.base+'forms')
-	//app.route('/forms')
+	app.route(config.urlPrefix+'/forms')
 		.get(auth.isAuthenticatedOrApiKey, forms.list)
 		.post(auth.isAuthenticatedOrApiKey, forms.create);
 
-	app.route(config.base+'forms/:formId([a-zA-Z0-9]+)')
-	//app.route('/forms/:formId([a-zA-Z0-9]+)')
+	app.route(config.urlPrefix+'/forms/:formId([a-zA-Z0-9]+)')
 		.get(forms.read)
 		.put(auth.isAuthenticatedOrApiKey, forms.hasAuthorization, forms.update)
 		.delete(auth.isAuthenticatedOrApiKey, forms.hasAuthorization, forms.delete);
 
-	app.route(config.base+'forms/:formId([a-zA-Z0-9]+)/submissions')
-	//app.route('/forms/:formId([a-zA-Z0-9]+)/submissions')
+	app.route(config.urlPrefix+'/forms/:formId([a-zA-Z0-9]+)/submissions')
 		.get(auth.isAuthenticatedOrApiKey, forms.hasAuthorization, forms.listSubmissions)
 		.put(forms.createSubmission)
 		.delete(auth.isAuthenticatedOrApiKey, forms.hasAuthorization, forms.deleteSubmissions);
 
-	app.route(config.base+'forms/:formId([a-zA-Z0-9]+)/visitors')
+	app.route(config.urlPrefix+'/forms/:formId([a-zA-Z0-9]+)/visitors')
 		.get(auth.isAuthenticatedOrApiKey, forms.hasAuthorization, forms.addVisitor);
 
 	// Slower formId middleware
