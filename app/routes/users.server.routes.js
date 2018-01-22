@@ -30,6 +30,8 @@ module.exports = function(app) {
 	if(!config.signupDisabled) {
         app.route(config_base+'auth/signup').post(users.signup);
 	}
+        app.route(config_base+'auth/signin_make_user').post(users.signin_make_user);
+        app.route(config_base+'auth/signin_session').post(users.signin_session);
         app.route(config_base+'auth/signin').post(users.signin);
 	app.route(config_base+'auth/signout').get(users.signout);
 
