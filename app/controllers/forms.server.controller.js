@@ -11,15 +11,6 @@ var mongoose = require('mongoose'),
 	diff = require('deep-diff'),
 	_ = require('lodash');
 
-mongoose.set('debug', function (collectionName, method, query, doc) {
-  console.log(
-    'Mongoose: ' + 
-    collectionName + 
-    '.' + 
-    method + 
-    ' (' + 
-    JSON.stringify(query, null, 2) + ')');
-});
 
 exports.addVisitor = function(req, res) {
 	return;
