@@ -6,6 +6,7 @@
 var errorHandler = require('../errors.server.controller'),
 	mongoose = require('mongoose'),
 	passport = require('passport'),
+	Ldap = require('ldapauth-fork'),
 	config = require('../../../config/config'),
 	User = mongoose.model('User'),
 	tokgen = require('../../libs/tokenGenerator'),
@@ -157,10 +158,56 @@ exports.signup = function(req, res) {
 	});
 };
 
+/*
+ passport LDAP doesn't have session support, so workaround is:
+	 check ldap or fail
+	 make user if no user or fail
+	 create session or fail
+ */ 
+exports.signin = function(req, res, next) {
+	var auth = new Ldap(config.ldap);
+	auth.authenticate(req.body.username, req.body.password, function(err, user) {
+		if (err) { 
+			var msg = 'Incorrect Username or Password';
+			console.log('err ' + err);
+			if ( typeof err === 'string' && err.includes('no such user') ) { 
+				err = msg;
+			}
+			if ( typeof err === 'object' && err.lde_message === 'Invalid Credentials' ) {
+				err = msg;
+			}
+			return res.status(400).send(err);
+		}
+		return res.redirect(307, '/meeps/auth/signin_make_user');
+	});
+	
+};
+
+exports.signin_make_user = function(req, res, next) {
+	delete req.body.roles;
+
+	// Init Variables
+	var user = new User(req.body);
+
+	// Set language to visitor's language
+	user.language = req.cookies.userLang;
+
+	// Add missing user fields
+	user.provider = 'local';
+	user.email = req.body.username + '@ofs.edu.sg';
+
+	user.save( function(err, user) {
+		if ( err && ! err.errmsg.includes('duplicate key error index') ) {
+			return res.status(400).send(err);
+		}
+		res.redirect(307, '/meeps/auth/signin_session');
+	});
+};
+
 /**
  * Signin after passport authentication
  */
-exports.signin = function(req, res, next) {
+exports.signin_session = function(req, res, next) {
 	
 	passport.authenticate('local', function(err, user, info) {
 		if (err || !user) {
