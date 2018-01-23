@@ -34,7 +34,7 @@ mongoose.connection.on('error', function (err) {
 	process.exit(-1);
 });
 
-if ( process.env.mongooseDebug ) {
+if ( config.mongooseDebug === true ) {
 	mongoose.set('debug', function (collectionName, method, query, doc) {
 	  console.log( 'Mongoose: ' + collectionName + '.' + method + ' (' + 
 	    JSON.stringify(query, null, 2) + ')');
