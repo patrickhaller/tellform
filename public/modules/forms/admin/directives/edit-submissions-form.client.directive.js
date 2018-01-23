@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('forms').directive('editSubmissionsFormDirective', ['$rootScope', '$http', 'Forms', '$stateParams', '$interval', 
-    function ($rootScope, $http, Forms, $stateParams, $interval ) {
+angular.module('forms').directive('editSubmissionsFormDirective', ['$rootScope', '$http', 'Forms', '$stateParams', '$interval', 'URL_PREFIX',
+    function ($rootScope, $http, Forms, $stateParams, $interval, URL_PREFIX ) {
         return {
             templateUrl: 'modules/forms/admin/views/directiveViews/form/edit-submissions-form.client.view.html',
             restrict: 'E',
@@ -10,7 +10,6 @@ angular.module('forms').directive('editSubmissionsFormDirective', ['$rootScope',
                 myform: '='
             },
             controller: function($scope){
-		var BASE_URL = '/meeps';
                 $scope.table = {
                     masterChecker: false,
                     rows: []
@@ -40,7 +39,7 @@ angular.module('forms').directive('editSubmissionsFormDirective', ['$rootScope',
                 $scope.getSubmissions = function(cb){
                     $http({
                       method: 'GET',
-                      url: BASE_URL+'/forms/'+$scope.myform._id+'/submissions'
+                      url: URL_PREFIX+'/forms/'+$scope.myform._id+'/submissions'
                     }).then(function successCallback(response) {
                         var defaultFormFields = _.cloneDeep($scope.myform.form_fields);
 
@@ -72,7 +71,7 @@ angular.module('forms').directive('editSubmissionsFormDirective', ['$rootScope',
                 $scope.getVisitors = function(){
                     $http({
                       method: 'GET',
-                      url: BASE_URL+'/forms/'+$scope.myform._id+'/visitors'
+                      url: URL_PREFIX+'/forms/'+$scope.myform._id+'/visitors'
                     }).then(function successCallback(response) {
                         var defaultFormFields = _.cloneDeep($scope.myform.form_fields);
 
@@ -196,7 +195,7 @@ angular.module('forms').directive('editSubmissionsFormDirective', ['$rootScope',
                         return row.selected === true;
                     }).pluck('_id').value();
 
-                    return $http({ url: BASE_URL+'/forms/'+$scope.myform._id+'/submissions',
+                    return $http({ url: URL_PREFIX+'/forms/'+$scope.myform._id+'/submissions',
                             method: 'DELETE',
                             data: {deleted_submissions: delete_ids},
                             headers: {'Content-Type': 'application/json;charset=utf-8'}

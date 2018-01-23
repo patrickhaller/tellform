@@ -9,8 +9,8 @@ jsep.addBinaryOp('!begins', 10);
 jsep.addBinaryOp('ends', 10);
 jsep.addBinaryOp('!ends', 10);
 
-angular.module('view-form').directive('submitFormDirective', ['$http', 'TimeCounter', '$filter', '$rootScope', 'SendVisitorData', '$translate', '$timeout',
-    function ($http, TimeCounter, $filter, $rootScope, SendVisitorData, $translate, $timeout) {
+angular.module('view-form').directive('submitFormDirective', ['$http', 'TimeCounter', '$filter', '$rootScope', 'SendVisitorData', '$translate', '$timeout', 'URL_PREFIX',
+    function ($http, TimeCounter, $filter, $rootScope, SendVisitorData, $translate, $timeout, URL_PREFIX) {
         return {
             templateUrl: 'form_modules/forms/base/views/directiveViews/form/submit-form.client.view.html',
 			restrict: 'E',
@@ -394,7 +394,7 @@ angular.module('view-form').directive('submitFormDirective', ['$http', 'TimeCoun
 					}
 
 					setTimeout(function () {
-						$scope.submitPromise = $http.put('/meeps/forms/' + $scope.myform._id + '/submissions', form)
+						$scope.submitPromise = $http.put(URL_PREFIX + '/forms/' + $scope.myform._id + '/submissions', form)
 							.success(function (data, status) {
 								$scope.myform.submitted = true;
 								$scope.loading = false;

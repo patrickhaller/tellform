@@ -1,6 +1,8 @@
 'use strict';
 
 // Setting up route
+angular.module('core').constant('URL_PREFIX', '/meeps');
+
 angular.module('core').config(['$stateProvider', '$urlRouterProvider',
 	function($stateProvider, $urlRouterProvider) {
 		// Redirect to home view when route not found
