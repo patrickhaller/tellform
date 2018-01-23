@@ -1,14 +1,13 @@
 'use strict';
 
-angular.module('users').factory('User', ['$window', '$q', '$timeout', '$http', '$state', 'BASE_URL',
-  function($window, $q, $timeout, $http, $state, BASE_URL) {
+angular.module('users').factory('User', ['$window', '$q', '$timeout', '$http', '$state', 'URL_PREFIX',
+  function($window, $q, $timeout, $http, $state, URL_PREFIX) {
 
-    //var BASE_URL = '/meeps';
     var userService = {
       getCurrent: function() {
       	var deferred = $q.defer();
 
-      	$http.get(BASE_URL+'/users/me')
+      	$http.get(URL_PREFIX+'/users/me')
     		  .success(function(response) {
     		    deferred.resolve(response);
     		  })
@@ -21,7 +20,7 @@ angular.module('users').factory('User', ['$window', '$q', '$timeout', '$http', '
       login: function(credentials) {
 
         var deferred = $q.defer();
-        $http.post(BASE_URL+'/auth/signin', credentials).then(function(response) {
+        $http.post(URL_PREFIX+'/auth/signin', credentials).then(function(response) {
             deferred.resolve(response.data);
           }, function(error) {
             deferred.reject(error.data.message || error.data);
@@ -32,7 +31,7 @@ angular.module('users').factory('User', ['$window', '$q', '$timeout', '$http', '
       logout: function() {
 
         var deferred = $q.defer();
-        $http.get(BASE_URL+'/auth/signout').then(function(response) {
+        $http.get(URL_PREFIX+'/auth/signout').then(function(response) {
           deferred.resolve(null);
         }, function(error) {
           deferred.reject(error.data.message || error.data);
@@ -43,7 +42,7 @@ angular.module('users').factory('User', ['$window', '$q', '$timeout', '$http', '
       signup: function(credentials) {
 
         var deferred = $q.defer();
-        $http.post(BASE_URL+'/auth/signup', credentials).then(function(response) {
+        $http.post(URL_PREFIX+'/auth/signup', credentials).then(function(response) {
           // If successful we assign the response to the global user model
           deferred.resolve(response.data);
         }, function(error) {
@@ -56,7 +55,7 @@ angular.module('users').factory('User', ['$window', '$q', '$timeout', '$http', '
       resendVerifyEmail: function(_email) {
 
         var deferred = $q.defer();
-        $http.post(BASE_URL+'/auth/verify', {email: _email}).then(function(response) {
+        $http.post(URL_PREFIX+'/auth/verify', {email: _email}).then(function(response) {
           deferred.resolve(response.data);
         }, function(error) {
           deferred.reject(error.data.message || error.data);
@@ -73,7 +72,7 @@ angular.module('users').factory('User', ['$window', '$q', '$timeout', '$http', '
         if( !validTokenRe.test(token) ) throw new Error('Error token: '+token+' is not a valid verification token');
 
         var deferred = $q.defer();
-        $http.get(BASE_URL+'/auth/verify/'+token).then(function(response) {
+        $http.get(URL_PREFIX+'/auth/verify/'+token).then(function(response) {
           deferred.resolve(response.data);
         }, function(error) {
           deferred.reject(error.data);

@@ -1,8 +1,8 @@
 'use strict';
 
 // Forms controller
-angular.module('forms').controller('ListFormsController', ['$rootScope', '$scope', '$stateParams', '$state', 'GetForms', 'CurrentForm', '$http', '$uibModal', 'myForms', 'BASE_URL',
-	function($rootScope, $scope, $stateParams, $state, GetForms, CurrentForm, $http, $uibModal, myForms, BASE_URL) {
+angular.module('forms').controller('ListFormsController', ['$rootScope', '$scope', '$stateParams', '$state', 'GetForms', 'CurrentForm', '$http', '$uibModal', 'myForms', 'URL_PREFIX',
+	function($rootScope, $scope, $stateParams, $state, GetForms, CurrentForm, $http, $uibModal, myForms, URL_PREFIX) {
 
         $scope = $rootScope;
         $scope.forms = {};
@@ -12,7 +12,7 @@ angular.module('forms').controller('ListFormsController', ['$rootScope', '$scope
 	for (var f in $scope.myforms) {
 		f = $scope.myforms[f];
 		if (f._id === undefined) { continue; }
-        	$http.get(BASE_URL+'/forms/' + f._id + '/submissions')
+        	$http.get(URL_PREFIX+'/forms/' + f._id + '/submissions')
                 .success( (function(f) {
 			return function(data, status, headers){
 				f.numberOfResponses = data.length;
@@ -86,7 +86,7 @@ angular.module('forms').controller('ListFormsController', ['$rootScope', '$scope
             var form = _.cloneDeep($scope.myforms[form_index]);
             delete form._id;
 
-            $http.post(BASE_URL+'/forms', {form: form})
+            $http.post(URL_PREFIX+'/forms', {form: form})
                 .success(function(data, status, headers){
                     $scope.myforms.splice(form_index+1, 0, data);
                 }).error(function(errorResponse){
@@ -105,7 +105,7 @@ angular.module('forms').controller('ListFormsController', ['$rootScope', '$scope
             form.language = $scope.forms.createForm.language.$modelValue;
 
             if($scope.forms.createForm.$valid && $scope.forms.createForm.$dirty){
-                $http.post(BASE_URL+'/forms', {form: form})
+                $http.post(URL_PREFIX+'/forms', {form: form})
                 .success(function(data, status, headers){
                     // Redirect after save
                     $scope.goToWithId('viewForm.create', data._id+'');
@@ -121,7 +121,7 @@ angular.module('forms').controller('ListFormsController', ['$rootScope', '$scope
                 throw new Error('Error: form_index in removeForm() must be between 0 and '+$scope.myforms.length-1);
             }
 
-            $http.delete(BASE_URL+'/forms/'+$scope.myforms[form_index]._id)
+            $http.delete(URL_PREFIX+'/forms/'+$scope.myforms[form_index]._id)
                 .success(function(data, status, headers){
                     $scope.myforms.splice(form_index, 1);
 					$scope.cancelDeleteModal();

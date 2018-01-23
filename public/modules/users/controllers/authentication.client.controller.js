@@ -1,8 +1,9 @@
 'use strict';
 
-angular.module('users').controller('AuthenticationController', ['$scope', '$location', '$state', '$rootScope', 'User', 'Auth', '$translate', '$window',
-	function($scope, $location, $state, $rootScope, User, Auth, $translate, $window) {
-		
+angular.module('users').controller('AuthenticationController', ['$scope', '$location', '$state', '$rootScope', 'User', 'Auth', '$translate', '$window', 'URL_PREFIX',
+	function($scope, $location, $state, $rootScope, User, Auth, $translate, $window, URL_PREFIX) {
+	
+		$rootScope.URL_PREFIX = URL_PREFIX;	
 		$scope = $rootScope;
 		$scope.credentials = {};
 		$scope.error = '';

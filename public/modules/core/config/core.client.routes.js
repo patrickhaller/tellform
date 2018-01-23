@@ -1,8 +1,6 @@
 'use strict';
 
 // Setting up route
-angular.module('core').constant('URL_PREFIX', '/meeps');
-
 angular.module('core').config(['$stateProvider', '$urlRouterProvider',
 	function($stateProvider, $urlRouterProvider) {
 		// Redirect to home view when route not found
@@ -21,7 +19,7 @@ angular.module(ApplicationConfiguration.applicationModuleName).run(['$rootScope'
 			$state.previous = {
 				state: fromState,
 				params: fromParams
-			}
+			};
 
 			var statesToIgnore = ['', 'home', 'signin', 'resendVerifyEmail', 'verify', 'signup', 'signup-success', 'forgot', 'reset-invalid', 'reset', 'reset-success'];
 

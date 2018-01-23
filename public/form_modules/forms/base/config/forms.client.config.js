@@ -46,6 +46,4 @@ angular.module('view-form').value('supportedFields', [
 	'natural'
 ]);
 
-angular.module('view-form').constant('VIEW_FORM_URL', '/meeps/forms/:formId/render');
-angular.module('view-form').constant('URL_PREFIX', '/meeps');
 

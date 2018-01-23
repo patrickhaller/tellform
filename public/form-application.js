@@ -10,6 +10,14 @@ angular.module(ApplicationConfiguration.applicationModuleName).config(['$locatio
 	}
 ]);
 
+angular.module(ApplicationConfiguration.applicationModuleName).config(['$compileProvider', function ($compileProvider) { 
+  $compileProvider.debugInfoEnabled(true);                                                                               
+}]);                                                                                                                     
+                                                                                                                         
+angular.module(ApplicationConfiguration.applicationModuleName).config(['$logProvider', function ($logProvider) {         
+  $logProvider.debugEnabled(true);                                                                                       
+}]);                                                                                                                     
+
 //Permission Constants
 angular.module(ApplicationConfiguration.applicationModuleName).constant('APP_PERMISSIONS', {
 	viewAdminSettings: 'viewAdminSettings',
@@ -26,7 +34,13 @@ angular.module(ApplicationConfiguration.applicationModuleName).constant('USER_RO
 });
 
 //form url
-angular.module(ApplicationConfiguration.applicationModuleName).constant('FORM_URL', '/forms/:formId');
+//angular.module('forms').constant('BASE_URL', '/meeps');
+//angular.module('users').constant('URL_PREFIX', '/meeps');
+//angular.module(ApplicationConfiguration.applicationModuleName).constant('BASE_URL', '/meeps');
+angular.module(ApplicationConfiguration.applicationModuleName).constant('FORM_URL', '/meeps/forms/:formId');
+//angular.module(ApplicationConfiguration.applicationModuleName).constant('FORM_URL', '/forms/:formId');
+
+// angular.module(ApplicationConfiguration.applicationModuleName).constant('VIEW_FORM_URL', '/meeps/forms/:formId/render');
 
 //Then define the init function for starting up the application
 angular.element(document).ready(function() {

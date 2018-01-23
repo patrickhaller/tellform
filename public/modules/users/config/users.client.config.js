@@ -1,15 +1,13 @@
 'use strict';
 
-angular.module('users').constant('BASE_URL', '/meeps');
-
 // Config HTTP Error Handling
-angular.module('users').config(['$httpProvider',
-	function($httpProvider) {
+angular.module('users').config(['$httpProvider', 'URL_PREFIX',
+	function($httpProvider, URL_PREFIX) {
     $httpProvider.interceptors.push(function($q, $location) {
       return {
         responseError: function(response) {
-          if( $location.path() !== '/meeps/users/me' && response.config){
-            if(response.config.url !== '/meeps/users/me'){
+          if( $location.path() !== URL_PREFIX + '/users/me' && response.config){
+            if(response.config.url !== URL_PREFIX + '/users/me'){
               if (response.status === 401) {
                 // save the current location so that login can redirect back
                 $location.nextAfterLogin = $location.path();
