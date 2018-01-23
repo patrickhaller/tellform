@@ -94,7 +94,6 @@ exports.listSubmissions = function(req, res) {
 				message: errorHandler.getErrorMessage(err)
 			});
 		}
-		console.log('listSubmissions ' + JSON.stringify(_submissions, null, 2) );
 		res.json(_submissions);
 	});
 };
