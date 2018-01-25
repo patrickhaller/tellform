@@ -1,3 +1,10 @@
+This fork of 
+TellForm 2.1.0
+adds support for 
+LDAP authentication
+and URL Prefixing for SSL-Termination / reverse-proxy routing.
+
+
 TellForm 2.1.0
 ========
 
