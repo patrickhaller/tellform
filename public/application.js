@@ -34,12 +34,8 @@ angular.module(ApplicationConfiguration.applicationModuleName).constant('USER_RO
 });
 
 //form url
-//angular.module(ApplicationConfiguration.applicationModuleName).constant('BASE_URL', '/meeps');
-angular.module(ApplicationConfiguration.applicationModuleName).constant('URL_PREFIX', '/meeps');
-angular.module(ApplicationConfiguration.applicationModuleName).constant('FORM_URL', '/meeps/forms/:formId');
-
-//angular.module('view-form').constant('VIEW_FORM_URL', '/meeps/forms/:formId/render');
-//angular.module(ApplicationConfiguration.applicationModuleName).constant('VIEW_FORM_URL', '/meeps/forms/:formId/render');
+angular.module(ApplicationConfiguration.applicationModuleName).constant('URL_PREFIX', '/surveys');
+angular.module(ApplicationConfiguration.applicationModuleName).constant('FORM_URL', '/surveys/forms/:formId');
 
 angular.module(ApplicationConfiguration.applicationModuleName).run([
   '$rootScope', 'URL_PREFIX',
