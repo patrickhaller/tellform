@@ -19,7 +19,7 @@ angular.module(ApplicationConfiguration.applicationModuleName).run(['$rootScope'
 			$state.previous = {
 				state: fromState,
 				params: fromParams
-			}
+			};
 
 			var statesToIgnore = ['', 'home', 'signin', 'resendVerifyEmail', 'verify', 'signup', 'signup-success', 'forgot', 'reset-invalid', 'reset', 'reset-success'];
 

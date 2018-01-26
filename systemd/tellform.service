@@ -1,0 +1,14 @@
+[Unit]
+Description=Tellform
+After=network.target
+
+[Service]
+WorkingDirectory=/opt/tellforms/src
+Type=simple
+User=forms
+ExecStart=/usr/bin/grunt
+ExecStop=
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

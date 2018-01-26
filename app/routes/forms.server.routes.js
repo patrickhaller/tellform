@@ -23,29 +23,32 @@ module.exports = function(app) {
 		app.route('/forms/:formId([a-zA-Z0-9]+)/render')
 			.get(auth.isAuthenticatedOrApiKey, forms.hasAuthorization, forms.readForRender);
 	} else {
-		app.route('/forms/:formIdFast([a-zA-Z0-9]+)/render')
+		app.route(config.urlPrefix + '/forms/:formIdFast([a-zA-Z0-9]+)/render')
 			.get(forms.readForRender);
 
-		app.route('/view/')
+		app.route(config.urlPrefix + '/view/')
 		 	.get(core.form);
 	}
 
-   	app.route('/forms/:formIdFast([a-zA-Z0-9]+)')
-        .post(forms.createSubmission)
+   	app.route(config.urlPrefix+'/forms/:formIdFast([a-zA-Z0-9]+)')
+        .post(forms.createSubmission);
 	
-	app.route('/forms')
+	app.route(config.urlPrefix+'/forms')
 		.get(auth.isAuthenticatedOrApiKey, forms.list)
 		.post(auth.isAuthenticatedOrApiKey, forms.create);
 
-	app.route('/forms/:formId([a-zA-Z0-9]+)')
+	app.route(config.urlPrefix+'/forms/:formId([a-zA-Z0-9]+)')
 		.get(forms.read)
-		.post(forms.createSubmission)
 		.put(auth.isAuthenticatedOrApiKey, forms.hasAuthorization, forms.update)
 		.delete(auth.isAuthenticatedOrApiKey, forms.hasAuthorization, forms.delete);
 
-	app.route('/forms/:formId([a-zA-Z0-9]+)/submissions')
+	app.route(config.urlPrefix+'/forms/:formId([a-zA-Z0-9]+)/submissions')
 		.get(auth.isAuthenticatedOrApiKey, forms.hasAuthorization, forms.listSubmissions)
+		.put(forms.createSubmission)
 		.delete(auth.isAuthenticatedOrApiKey, forms.hasAuthorization, forms.deleteSubmissions);
+
+	app.route(config.urlPrefix+'/forms/:formId([a-zA-Z0-9]+)/visitors')
+		.get(auth.isAuthenticatedOrApiKey, forms.hasAuthorization, forms.addVisitor);
 
 	// Slower formId middleware
 	app.param('formId', forms.formByID);

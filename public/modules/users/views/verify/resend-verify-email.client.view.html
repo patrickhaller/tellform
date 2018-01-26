@@ -3,7 +3,7 @@
 	<section class="row valign" ng-if="!isResetSent">
 		<div class="col-md-4 col-md-offset-4">
 			<div class="col-md-12 text-center" style="padding-bottom: 50px;">
-				<img src="/static/modules/core/img/logo_white.svg" height="100px">
+				<img src="static/modules/core/img/logo_white.svg" height="100px">
 			</div>
 			<div data-ng-show="error" class="text-center text-danger">
 				<strong>{{error}}</strong>
@@ -26,7 +26,7 @@
 	<section class="row valign" ng-if="isResetSent">
 		<div class="col-md-4 col-md-offset-4">
 			<div class="col-md-12 text-center" style="padding-bottom: 50px;">
-				<img src="/static/modules/core/img/logo_white.svg" height="100px">
+				<img src="static/modules/core/img/logo_white.svg" height="100px">
 			</div>
 			<h3 class="col-md-12 text-center">{{ 'VERIFICATION_EMAIL_SENT' | translate }}</h3>
 			<div class="col-md-12">
@@ -37,7 +37,7 @@
 				<p> {{ 'CHECK_YOUR_EMAIL' | translate }} <a href="mail:polydaic@gmail.com">polydaic@gmail.com</a></p>
 				<div class="text-center form-group">
 					<button type="submit" class="btn btn-large btn-primary btn-rounded">
-						<a href="/#!/" style="color:white;">{{ 'CONTINUE' | translate }}</a>
+						<a href="{{ URL_PREFIX }}/#!/" style="color:white;">{{ 'CONTINUE' | translate }}</a>
 					</button>
 				</div>
 			</div>

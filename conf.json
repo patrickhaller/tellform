@@ -9,6 +9,11 @@
         "exclude": [ "test/*", "examples/*", "node_modules/*" ]
     },
     "plugins": ["plugins/markdown"],
+    "log": {
+	"fileLogger": {
+		"directoryPath": "/opt/tellforms/logs"
+	}
+    },
     "templates": {
         "cleverLinks": false,
         "monospaceLinks": false,

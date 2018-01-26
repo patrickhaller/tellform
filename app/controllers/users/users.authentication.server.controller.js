@@ -6,6 +6,7 @@
 var errorHandler = require('../errors.server.controller'),
 	mongoose = require('mongoose'),
 	passport = require('passport'),
+	Ldap = require('ldapauth-fork'),
 	config = require('../../../config/config'),
 	User = mongoose.model('User'),
 	tokgen = require('../../libs/tokenGenerator'),
@@ -34,7 +35,7 @@ var config_nev = function () {
         emailAndUsernameUnique: true,
 	    expirationTime: 86400,  // 24 hours
 
-	    verificationURL: config.baseUrl+'/#!/verify/${URL}',
+	    verificationURL: config.urlExternal + '/#!/verify/${URL}',
 	    transportOptions: config.mailer.options,
 	    
 	    verifySendMailCallback: function(err, info) {
@@ -60,7 +61,7 @@ config_nev();
 
 exports.validateVerificationToken = function(req, res){
 
-	const fn = pug.compileFile(__dirname + "/../../views/welcome.email.view.pug");
+	const fn = pug.compileFile(__dirname + '/../../views/welcome.email.view.pug');
 	var renderedHtml = fn(res.locals);
 
     var emailTemplate = {
@@ -83,7 +84,7 @@ exports.validateVerificationToken = function(req, res){
 };
 
 exports.resendVerificationEmail = function(req, res, next){
-	const fn = pug.compileFile(__dirname + "/../../views/verification.email.view.pug");
+	const fn = pug.compileFile(__dirname + '/../../views/verification.email.view.pug');
 	var renderedHtml = fn(res.locals);
 
 	var emailTemplate = {
@@ -117,7 +118,7 @@ exports.signup = function(req, res) {
 	var user = new User(req.body);
 
 	// Set language to visitor's language
-	user.language = req.cookies['userLang'];
+	user.language = req.cookies.userLang;
 
 	// Add missing user fields
 	user.provider = 'local';
@@ -127,13 +128,13 @@ exports.signup = function(req, res) {
 		if (err) {
 			console.log(err);
 			return res.status(400).send({
-				message: errorHandler.getErrorMessage(err)
+				message: 'createTempUser ' + errorHandler.getErrorMessage(err)
 			});
 		}
 
 		// new user created
 		if (newTempUser) {
-			const fn = pug.compileFile(__dirname + "/../../views/verification.email.view.pug");
+			const fn = pug.compileFile(__dirname + '/../../views/verification.email.view.pug');
 			var renderedHtml = fn(res.locals);
 
 			var URL = newTempUser[nev.options.URLFieldName];
@@ -146,7 +147,7 @@ exports.signup = function(req, res) {
 			nev.sendVerificationEmail(user.email, URL, emailTemplate, function (sendEmailErr, info) {
 				if (sendEmailErr) {
 					return res.status(400).send({
-						message: errorHandler.getErrorMessage(err)
+						message: 'sendVerificationEmail ' + errorHandler.getErrorMessage(err)
 					});
 				}
 				return res.status(200).send('An email has been sent to you. Please check it to verify your account.');
@@ -157,10 +158,56 @@ exports.signup = function(req, res) {
 	});
 };
 
+/*
+ passport LDAP doesn't have session support, so workaround is:
+	 check ldap or fail
+	 make user if no user or fail
+	 create session or fail
+ */ 
+exports.signin = function(req, res, next) {
+	var auth = new Ldap(config.ldap);
+	auth.authenticate(req.body.username, req.body.password, function(err, user) {
+		if (err) { 
+			var msg = 'Incorrect Username or Password';
+			console.log('err ' + err);
+			if ( typeof err === 'string' && err.includes('no such user') ) { 
+				err = msg;
+			}
+			if ( typeof err === 'object' && err.lde_message === 'Invalid Credentials' ) {
+				err = msg;
+			}
+			return res.status(400).send(err);
+		}
+		return res.redirect(307, config.urlPrefix + '/auth/signin_make_user');
+	});
+	
+};
+
+exports.signin_make_user = function(req, res, next) {
+	delete req.body.roles;
+
+	// Init Variables
+	var user = new User(req.body);
+
+	// Set language to visitor's language
+	user.language = req.cookies.userLang;
+
+	// Add missing user fields
+	user.provider = 'local';
+	user.email = req.body.username + '@ofs.edu.sg';
+
+	user.save( function(err, user) {
+		if ( err && ! err.errmsg.includes('duplicate key error index') ) {
+			return res.status(400).send(err);
+		}
+		res.redirect(307, config.urlPrefix + '/auth/signin_session');
+	});
+};
+
 /**
  * Signin after passport authentication
  */
-exports.signin = function(req, res, next) {
+exports.signin_session = function(req, res, next) {
 	
 	passport.authenticate('local', function(err, user, info) {
 		if (err || !user) {

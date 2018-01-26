@@ -11,15 +11,23 @@ var mongoose = require('mongoose'),
 	diff = require('deep-diff'),
 	_ = require('lodash');
 
+
+exports.addVisitor = function(req, res) {
+	return;
+};
+
+
 /**
  * Delete a forms submissions
  */
 exports.deleteSubmissions = function(req, res) {
 
-	var submission_id_list = req.body.deleted_submissions,
-		form = req.form;
+	var submission_id_list = req.body.deleted_submissions;
+	if (submission_id_list instanceof String) {
+		submission_id_list = [ submission_id_list ];
+	}
 
-	FormSubmission.remove({ form: req.form, admin: req.user, _id: {$in: submission_id_list} }, function(err){
+	FormSubmission.remove({ form: req.form._id, _id: {$in: submission_id_list} }, function(err){
 
 		if(err){
 			res.status(400).send({
@@ -28,8 +36,8 @@ exports.deleteSubmissions = function(req, res) {
 			return;
 		}
 
-		form.analytics.visitors = [];
-		form.save(function(formSaveErr){
+		req.form.analytics.visitors = [];
+		req.form.save(function(formSaveErr){
 			if(formSaveErr){
 				res.status(400).send({
 					message: errorHandler.getErrorMessage(formSaveErr)
@@ -47,6 +55,7 @@ exports.deleteSubmissions = function(req, res) {
  */
 exports.createSubmission = function(req, res) {
 
+	console.log('creating submission');
 	var timeElapsed = 0;
 	
 	if(typeof req.body.timeElapsed === 'number'){
@@ -77,9 +86,8 @@ exports.createSubmission = function(req, res) {
  * Get List of Submissions for a given Form
  */
 exports.listSubmissions = function(req, res) {
-	var _form = req.form;
 
-	FormSubmission.find({ form: _form._id }).sort('created').lean().exec(function(err, _submissions) {
+	FormSubmission.find({ form: req.form._id }).sort('created').lean().exec(function(err, _submissions) {
 		if (err) {
 			console.error(err);
 			res.status(500).send({
@@ -95,6 +103,7 @@ exports.listSubmissions = function(req, res) {
  */
 exports.create = function(req, res) {
 	
+	console.log('creating a new form');
 	if(!req.body.form){
 		return res.status(400).send({
 			message: 'Invalid Input'
@@ -105,7 +114,7 @@ exports.create = function(req, res) {
 	form.admin = req.user._id;
 
 	form.save(function(err) {
-		debugger;
+		//debugger;
 		if (err) {
 			return res.status(500).send({
 				message: errorHandler.getErrorMessage(err)
@@ -174,7 +183,7 @@ exports.update = function(req, res) {
     	form.analytics = {
     		visitors: [],
     		gaCode: ''
-    	}
+    	};
     }
 
 	if (req.body.changes) {

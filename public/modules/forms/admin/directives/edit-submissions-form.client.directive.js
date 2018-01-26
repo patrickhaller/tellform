@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('forms').directive('editSubmissionsFormDirective', ['$rootScope', '$http', 'Forms', '$stateParams', '$interval',
-    function ($rootScope, $http, Forms, $stateParams, $interval) {
+angular.module('forms').directive('editSubmissionsFormDirective', ['$rootScope', '$http', 'Forms', '$stateParams', '$interval', 'URL_PREFIX',
+    function ($rootScope, $http, Forms, $stateParams, $interval, URL_PREFIX ) {
         return {
             templateUrl: 'modules/forms/admin/views/directiveViews/form/edit-submissions-form.client.view.html',
             restrict: 'E',
@@ -19,7 +19,7 @@ angular.module('forms').directive('editSubmissionsFormDirective', ['$rootScope',
                 $scope.waitingForDeletion = false;
 
                 //Waits until deletionInProgress is false before running getSubmissions
-                $scope.$watch("deletionInProgress",function(newVal, oldVal){
+                $scope.$watch('deletionInProgress',function(newVal, oldVal){
                     if(newVal === oldVal) return;
 
                     if(newVal === false && $scope.waitingForDeletion) {
@@ -39,7 +39,7 @@ angular.module('forms').directive('editSubmissionsFormDirective', ['$rootScope',
                 $scope.getSubmissions = function(cb){
                     $http({
                       method: 'GET',
-                      url: '/forms/'+$scope.myform._id+'/submissions'
+                      url: URL_PREFIX+'/forms/'+$scope.myform._id+'/submissions'
                     }).then(function successCallback(response) {
                         var defaultFormFields = _.cloneDeep($scope.myform.form_fields);
 
@@ -71,7 +71,7 @@ angular.module('forms').directive('editSubmissionsFormDirective', ['$rootScope',
                 $scope.getVisitors = function(){
                     $http({
                       method: 'GET',
-                      url: '/forms/'+$scope.myform._id+'/visitors'
+                      url: URL_PREFIX+'/forms/'+$scope.myform._id+'/visitors'
                     }).then(function successCallback(response) {
                         var defaultFormFields = _.cloneDeep($scope.myform.form_fields);
 
@@ -85,6 +85,7 @@ angular.module('forms').directive('editSubmissionsFormDirective', ['$rootScope',
                 $scope.getVisitors();
 
                 //Fetch submissions and visitor data every 1.67 min
+/*
                 var updateSubmissions = $interval($scope.handleSubmissionsRefresh, 100000);
                 var updateVisitors = $interval($scope.getVisitors, 1000000);
 
@@ -98,6 +99,7 @@ angular.module('forms').directive('editSubmissionsFormDirective', ['$rootScope',
                         $interval.cancel($scope.updateVisitors);
                     }
                 });
+*/
 
                 /*
                 ** Analytics Functions
@@ -177,7 +179,8 @@ angular.module('forms').directive('editSubmissionsFormDirective', ['$rootScope',
                     $event.stopPropagation();
                 };
                 $scope.rowClicked = function(row_index) {
-                   $scope.table.rows[row_index].selected = !$scope.table.rows[row_index].selected;
+                   //$scope.table.rows[row_index].selected = ! $scope.table.rows[row_index].selected;
+                   // angular already syncs this
                 };
 
                 /*
@@ -189,10 +192,10 @@ angular.module('forms').directive('editSubmissionsFormDirective', ['$rootScope',
 
                     $scope.deletionInProgress = true;
                     var delete_ids = _.chain($scope.table.rows).filter(function(row){
-                        return !!row.selected;
+                        return row.selected === true;
                     }).pluck('_id').value();
 
-                    return $http({ url: '/forms/'+$scope.myform._id+'/submissions',
+                    return $http({ url: URL_PREFIX+'/forms/'+$scope.myform._id+'/submissions',
                             method: 'DELETE',
                             data: {deleted_submissions: delete_ids},
                             headers: {'Content-Type': 'application/json;charset=utf-8'}
