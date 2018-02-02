@@ -64,7 +64,7 @@ angular.module('forms').directive('editFormDirective', ['$rootScope', 'FormField
 								'Hourglass',
 								'bell',
 								'Paper Plane',
-								'Comment',
+								//'Comment',
 								'Trash'
 							];
 
@@ -116,7 +116,7 @@ angular.module('forms').directive('editFormDirective', ['$rootScope', 'FormField
 								'Hourglass': 'Hourglass',
 								'bell': 'Bell',
 								'Paper Plane': 'Paper Plane',
-								'Comment': 'Chat Bubble',
+								//'Comment': 'Chat Bubble',
 								'Trash': 'Trash Can'
 							};
 
